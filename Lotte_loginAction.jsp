@@ -8,7 +8,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base href="/">
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>JSP 게시판 웹 사이트</title>
 </head>
 <body>
@@ -21,7 +25,7 @@
             PrintWriter script = response.getWriter();
             script.println("<script>");
             script.println("alert('이미 로그인이 되어있습니다.')");
-            script.println("location.href = 'main.jsp'"); // 메인페이지로 보냄
+            script.println("location.href = 'Lotte_index.jsp'"); // 메인페이지로 보냄
             script.println("</script>");
         }
         UserDAO userDAO = new UserDAO();
@@ -31,7 +35,7 @@
             PrintWriter script = response.getWriter();
             script.println("<script>");
             script.println("<alert>success</alert>");
-            script.println("location.href = 'main.jsp'"); // 로그인 되면 이동할페이지
+            script.println("location.href = 'Lotte_index.jsp'"); // 로그인 되면 이동할페이지
             script.println("</script>");
         } else if (result == 0) { // 비밀번호 불일치시
             PrintWriter script = response.getWriter();

@@ -5,61 +5,54 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+ 
+
 public class UserDAO {
-	
-	private Connection conn; //ÀÚ¹Ù¿Í µ¥ÀÌÅÍº£ÀÌ½º¸¦ ¿¬°á
-	private PreparedStatement pstmt; //Äõ¸®¹® ´ë±â ¹× ¼³Á¤
-	private ResultSet rs; //°á°ú°ª ¹Ş¾Æ¿À±â
-	
-	//±âº» »ı¼ºÀÚ
-	//UserDAO°¡ ½ÇÇàµÇ¸é ÀÚµ¿À¸·Î »ı¼ºµÇ´Â ºÎºĞ
-	//¸Ş¼Òµå¸¶´Ù ¹İº¹µÇ´Â ÄÚµå¸¦ ÀÌ°÷¿¡ ³ÖÀ¸¸é ÄÚµå°¡ °£¼ÒÈ­µÈ´Ù
-	public UserDAO() {
-		try {
-			String dbURL = "jdbc:mariadb://localhost:3306/bbs";
-			String dbID = "root";
-			String dbPassword = "1234";
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	//·Î±×ÀÎ ¿µ¿ª
-	public int login(String userID, String userPassword) {
-		String sql = "select userPassword from user where userID = ?";
-		try {
-			pstmt = conn.prepareStatement(sql); //sqlÄõ¸®¹®À» ´ë±â ½ÃÅ²´Ù
-			pstmt.setString(1, userID); //Ã¹¹øÂ° '?'¿¡ ¸Å°³º¯¼ö·Î ¹Ş¾Æ¿Â 'userID'¸¦ ´ëÀÔ
-			rs = pstmt.executeQuery(); //Äõ¸®¸¦ ½ÇÇàÇÑ °á°ú¸¦ rs¿¡ ÀúÀå
-			if(rs.next()) {
-				if(rs.getString(1).equals(userPassword)) {
-					return 1; //·Î±×ÀÎ ¼º°ø
-				}else
-					return 0; //ºñ¹Ğ¹øÈ£ Æ²¸²
-			}
-			return -1; //¾ÆÀÌµğ ¾øÀ½
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return -2; //¿À·ù
-	}
-	
-	
-	public int join(User user) {
-		  String sql = "insert into user values(?, ?, ?, ?, ?)";
-		  try {
-		    pstmt = conn.prepareStatement(sql);
-		    pstmt.setString(1, user.getUserID());
-		    pstmt.setString(2, user.getUserPassword());
-		    pstmt.setString(3, user.getUserName());
-		    pstmt.setString(4, user.getUserGender());
-		    pstmt.setString(5, user.getUserEmail());
-		    return pstmt.executeUpdate();
-		  }catch (Exception e) {
-		 	e.printStackTrace();
-		  }
-		  return -1;
-		}
+
+    private Connection conn;
+    private PreparedStatement pstmt; //í•´í‚¹ì„ ë°©ì§€í•˜ëŠ”
+    private ResultSet rs;
+
+ 
+
+    public UserDAO() {
+        try {
+
+            String dbURL = "jdbc:mysql://localhost:3306/BBS";
+
+            String dbID = "root";
+
+            String dbPassword = "1234";
+
+            Class.forName("com.mysql.jdbc.Driver");
+
+            conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+ 
+
+    public int login(String userID, String userPassword) {
+        String SQL = "SELECT userPassword FROM USER WHERE userID = ?"; //?ë¡œ userIDë¥¼ ë°›ìŒ
+        try {
+
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, userID);
+            rs = pstmt.executeQuery();//ê²°ê³¼ëŒ€ì…
+            if (rs.next()) {
+
+                if(rs.getString(1).equals(userPassword)) {
+                    return 1; // ë¡œê·¸ì¸ ì„±ê³µ
+                } else {
+                    return 0; // ë¹„ë°€ë²ˆí˜¸ ë¶ˆì¼ì¹˜
+                }
+            }
+            return -1; // ì•„ì´ë””ê°€ ì—†ìŒ
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -2; // ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¥˜
+    }
 }
